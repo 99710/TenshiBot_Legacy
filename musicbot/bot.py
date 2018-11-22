@@ -1,7 +1,7 @@
-#tb_github_code, api keys removed
+#Github ok
 #TenshiBot main code, Created by 99710 (formerly known as Harry99710)
 #Uses https://github.com/Just-Some-Bots/MusicBot as a code base, music related code/commands removed
-#Tenshi is intended to be running on a debian linux VPS under root (yes, i know), certian commands may break if running on Windows/MacOS or another linux distro
+#Tenshi is intended to be running on a debian linux VPS under root, certian commands may break if running on Windows/MacOS or another linux distro
 
 
 import os
@@ -42,6 +42,8 @@ from musicbot.permissions import Permissions, PermissionsDefaults
 from musicbot.utils import load_file, write_file, sane_round_int
 
 from . import exceptions
+from . import downloader
+from .opus_loader import load_opus_lib
 from .constants import VERSION as BOTVERSION
 from .constants import DISCORD_MSG_CHAR_LIMIT, AUDIO_CACHE_PATH
 
@@ -49,10 +51,15 @@ from random import randint
 from pybooru import Danbooru
 from google_images_download import google_images_download
 from pixivpy3 import *
+from weather import Weather, Unit
 
 api = AppPixivAPI()
 
+
+load_opus_lib()
 st = time.time()
+
+
 
 
 
@@ -141,6 +148,19 @@ shitpost = [
 "Shitposting in this chat cuz i'm Nazrin",
 "https://www.youtube.com/watch?v=7GtAad-dMS8",
 "https://www.youtube.com/watch?v=iqT0iFZifgw",
+]
+
+gensokyoweather = [
+"Sunny skies from here in heaven",
+"How should i know? The Kappas are still installing the weather station",
+"I would tell you but Marisa stole my weather station",
+"Stop being lazy and look yourself",
+"Peaches!",
+"Dunno, weather never changes in heaven",
+"Hold on, I'll ask Reimu",
+"Hold on, I'll ask Nitori",
+"Hold on, I'll ask Yukari",
+"Raining keystones!",
 ]
 
 
@@ -419,7 +439,7 @@ class MusicBot(discord.Client):
     async def on_ready(self):
         print('\rTenshiBot System Initialised!')
         print('\rPosting server count...')
-        requests.post('https://discordbots.org/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':'<key_removed>'}, data={'server_count':len(self.servers)})
+        requests.post('https://discordbots.org/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
         print('\rDone!, contiuning startup...')
 
         if self.config.owner_id == self.user.id:
@@ -1460,7 +1480,7 @@ class MusicBot(discord.Client):
 #        """
 #        """
 #        from cleverwrap import CleverWrap
-#        cw = CleverWrap("<removed>")
+#        cw = CleverWrap("")
 #        unsplit = message.content.split("ai")
 #        split = unsplit[1]
 #        answer = (cw.say(split))
@@ -1471,13 +1491,34 @@ class MusicBot(discord.Client):
     async def cmd_ai(self, channel, message):
         await self.safe_send_message(channel, ":information_source: **The AI feature has been disabled**")
 
+    async def cmd_weather(client, message, location, channel):
+
+
+#checking if the user specified gensokyo
+
+        if message.content == "=weather gensokyo":
+
+#            await client.safe_send_message(channel, "Sunny skies from here in heaven")
+            return Response(random.choice(gensokyoweather), delete_after=0)
+
+        else:
+
+            weather = Weather(unit=Unit.CELSIUS)
+
+        location = weather.lookup_by_location(message.content[len("=weather "):].strip())
+#        forecasts = location.forecast
+        condition = location.condition
+#        for forecast in forecasts:
+
+        await client.send_message(message.channel, "Current Conditions: " + condition.text +  "\n" + "Temperature: " + condition.temp + "C" )
+
 
     async def cmd_aireset(self, message, channel):
         """
         Reset the cleverbot conversation (useful if TenshiBot starts being random)
         """
         from cleverwrap import CleverWrap
-        cw = CleverWrap("<removed>")
+        cw = CleverWrap("")
         cw.reset()
         await self.safe_send_message(channel, ":arrows_counterclockwise:")
 
@@ -1539,7 +1580,7 @@ class MusicBot(discord.Client):
 #google images addon test command gitest
 
     async def cmd_gitest(self, channel, message):
-        await self.safe_send_message(channel, "*boops back*")
+        await self.safe_send_message(channel, "dev_gitest")
 
         response = google_images_download.googleimagesdownload("tenshi")
         absolute_image_paths = response.download()
@@ -1600,8 +1641,17 @@ class MusicBot(discord.Client):
         """
         await self.safe_send_message(message.channel, "`" + message.content[len("=md"):].strip() + "`")
 
+    async def cmd_sensay(self, channel, message):
+        """
+        Delete say, a say command that deletes the invoking message. usage is same as standard say command
+        """
+        await self.safe_delete_message(message, quiet=True)
+        await self.safe_send_message(message.channel, message.content[len("=sensay "):].strip())
+        s = await self.safe_send_message(channel, "hc68cl 1")
+        await asyncio.sleep(0.5)
+        await self.safe_delete_message(s, quiet=True)
 
-    async def cmd_say246(self, channel, message):
+    async def cmd_say(self, channel, message):
         """
         Say <text>
         """
@@ -1671,13 +1721,13 @@ class MusicBot(discord.Client):
         """
         ?
         """
-#        requests.post('http://bots.discord.pw/api/bots/252442396879486976/stats', data = {'<key_removed>':'server_count = 218'})
+#        requests.post('http://bots.discord.pw/api/bots/252442396879486976/stats', data = {'':'server_count = 218'})
         await self.safe_send_message(channel, ":warning: done")
 
 #api posting for the bot list sites, will have to implent this properly sometime instead of a command
 
-        requests.post('https://discordbots.org/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':'<key_removed)'}, data={'server_count':len(self.servers)})
-        requests.post('http://bots.discord.pw/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':'<key_removed>'}, data={'server_count':len(self.servers)})
+        requests.post('https://discordbots.org/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
+        requests.post('http://bots.discord.pw/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
 
     @owner_only
     async def cmd_ssetnick(self, server, channel, message, leftover_args, nick):
@@ -1728,6 +1778,8 @@ class MusicBot(discord.Client):
             await self.leave_server(target)
             return Response("rip {0.name}  (ID: {0.id})".format(target))
 
+#dev_remote nickname set
+
     @owner_only
     async def cmd_rsetnick(self, id, channel, message):
         """
@@ -1742,18 +1794,50 @@ class MusicBot(discord.Client):
             await self.change_nickname(target, "test")
             return Response("rip {0.name}  (ID: {0.id})".format(target))
 
+#dev_invite_gen
+
+    @owner_only
+    async def cmd_inv2(self, id, channel, author):
+        """
+            =inv2 <id>
+        Get an invite to a server (owner only command)
+        """
+        target = self.get_server(id)
+        if target is None:
+            await self.safe_send_message(channel, ":warning: not on that server...")
+        else:
+            inv = await self.create_invite(target)
+            await self.safe_send_message(channel, inv)
+            await self.safe_send_message(channel, ">> {0.name}  (ID: {0.id}) <<".format(target))
+
+#dev_msg_pin_by_id
+
     @owner_only
     async def cmd_pin(self, id, channel, author):
         """
-            =pin
-
+            =pin <id>
+        Pin a message (owner only command)
         """
         target = self.get_message(id)
         if target is None:
             await self.safe_send_message(channel, ":warning: Invalid ID")
         else:
             inv = await self.pin_message(target)
+#            await self.safe_send_message(channel, inv)
+#            await self.safe_send_message(channel, ">> {0.name}  (ID: {0.id}) <<".format(target))
 
+
+    @owner_only
+    async def cmd_tenshiban(self, id, channel, author):
+        """
+            =leaveserver <id>
+        Make tenshibot leave a server
+        """
+        target = server.member(id)
+        if target is None:
+            await self.safe_send_message(channel, ":warning: Can't leave a server i'm not on...")
+        else:
+            inv = await self.ban(target)
 
     @owner_only
     async def cmd_tenshikick(self, id, channel, author):
@@ -1767,10 +1851,12 @@ class MusicBot(discord.Client):
         else:
             inv = await self.kick(target)
 
+#WORKING!!
     async def cmd_iftest(self, arg, channel, message):
         """
         """
-        if message.content[len("=iftest "):].strip() is " Tenshi":
+#        if message.content[len("=iftest"):].strip() == "Tenshi":
+        if message.content == "=iftest T":
             await self.safe_send_message(channel, "Neko Miko Reimu")
         else:
             await self.safe_send_message(channel, "Neko Miko sanae")
@@ -1794,7 +1880,16 @@ class MusicBot(discord.Client):
 
 #help_cmd
     async def cmd_help(self, author, message, channel, command=None):
-        cmds = open("commands/sectionlist.txt", "r")
+
+        if message.content == "=help html":
+
+            await self.safe_send_message(channel, "View my commands here http://193.70.38.209/tb_command.html")
+            return
+
+
+        else:
+
+            cmds = open("commands/sectionlist.txt", "r")
         commands = cmds.read()
 
         if command:
@@ -1846,7 +1941,7 @@ class MusicBot(discord.Client):
         await self.safe_send_message(channel, ":white_check_mark: Sent, check PMs")
 
     async def cmd_help5(self, author, message, channel):
-        cmds = open("commands/debug.txt", "r")
+        cmds = open("commands/debug2.txt", "r")
         commands = cmds.read()
         await self.safe_send_message(author, commands)
         await self.safe_send_message(channel, ":eyes:")
@@ -1870,6 +1965,7 @@ class MusicBot(discord.Client):
         em.set_author(name='Error!', icon_url=self.user.avatar_url)
         await self.send_message(channel, embed=em)
 
+#dev_remote_say
     @owner_only
     async def cmd_rsay(self, channel, message):
         await self.send_message(discord.Object(id=369389053017194497), message.content[len("=rsay "):].strip())
