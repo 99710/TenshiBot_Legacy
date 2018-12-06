@@ -1,4 +1,3 @@
-#Github ok
 #TenshiBot main code, Created by 99710 (formerly known as Harry99710)
 #Uses https://github.com/Just-Some-Bots/MusicBot as a code base, music related code/commands removed
 #Tenshi is intended to be running on a debian linux VPS under root, certian commands may break if running on Windows/MacOS or another linux distro
@@ -162,6 +161,12 @@ gensokyoweather = [
 "Hold on, I'll ask Yukari",
 "Raining keystones!",
 ]
+
+enviromentcanada = [
+"https://www.youtube.com/watch?v=fco9mR2Uzko", 
+"https://www.youtube.com/watch?v=O5hGcVLwrCM",
+]
+
 
 
 class SkipState:
@@ -1103,6 +1108,9 @@ class MusicBot(discord.Client):
     async def cmd_honk(self, channel, message):
         await self.send_file(channel, "pics/touhou/honk/" + random.choice(os.listdir("pics/touhou/honk")))
 
+    async def cmd_shou(self, channel, message):
+        await self.send_file(channel, "pics/touhou/shou/" + random.choice(os.listdir("pics/touhou/shou")))
+
     async def cmd_nemuno(self, channel, message):
         await self.send_file(channel, "pics/touhou/nemuno/" + random.choice(os.listdir("pics/touhou/nemuno")))
 
@@ -1500,6 +1508,11 @@ class MusicBot(discord.Client):
 
 #            await client.safe_send_message(channel, "Sunny skies from here in heaven")
             return Response(random.choice(gensokyoweather), delete_after=0)
+
+        if message.content == "=weather enviromentcanada":
+
+#            await client.send_file(channel, "pics/enviromentcanada.png")
+            return Response(random.choice(enviromentcanada), delete_after=0)
 
         else:
 
