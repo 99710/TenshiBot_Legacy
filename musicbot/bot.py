@@ -1,3 +1,4 @@
+#github ok
 #TenshiBot main code, Created by 99710 (formerly known as Harry99710)
 #Uses https://github.com/Just-Some-Bots/MusicBot as a code base, music related code/commands removed
 #Tenshi is intended to be running on a debian linux VPS under root, certian commands may break if running on Windows/MacOS or another linux distro
@@ -1738,9 +1739,10 @@ class MusicBot(discord.Client):
         await self.safe_send_message(channel, ":warning: done")
 
 #api posting for the bot list sites, will have to implent this properly sometime instead of a command
+#bots.discord.pw disable due to URL change and it not working properly
 
         requests.post('https://discordbots.org/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
-        requests.post('http://bots.discord.pw/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
+#        requests.post('http://bots.discord.pw/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
 
     @owner_only
     async def cmd_ssetnick(self, server, channel, message, leftover_args, nick):
