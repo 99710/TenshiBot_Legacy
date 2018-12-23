@@ -1,4 +1,4 @@
-#github ok
+#Gitgub ok
 #TenshiBot main code, Created by 99710 (formerly known as Harry99710)
 #Uses https://github.com/Just-Some-Bots/MusicBot as a code base, music related code/commands removed
 #Tenshi is intended to be running on a debian linux VPS under root, certian commands may break if running on Windows/MacOS or another linux distro
@@ -21,6 +21,10 @@ import cleverbot
 import requests
 import pybooru
 import pixivpy3
+import cleverbot_io
+
+#May get moved to cmd_ai
+bot = cleverbot_io.set(user='', key='', nick='Tenko_AI')
 
 
 from discord import utils
@@ -1497,8 +1501,12 @@ class MusicBot(discord.Client):
 #        await asyncio.sleep(30)
 #        cw.reset()
 
-    async def cmd_ai(self, channel, message):
-        await self.safe_send_message(channel, ":information_source: **The AI feature has been disabled**")
+#Cleverbot_io API, apparently this one is free. may still go off topic tho
+    async def cmd_ai(client, message, question, channel):
+        unsplit = message.content.split("ai")
+        split = unsplit[1]
+        answer = (bot.ask(split))
+        await client.send_message(message.channel, answer)
 
     async def cmd_weather(client, message, location, channel):
 
