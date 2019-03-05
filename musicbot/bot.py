@@ -23,7 +23,6 @@ import pybooru
 import pixivpy3
 import cleverbot_io
 #import saucenaopy
-from saucenaopy import SauceNAO
 
 #Uncomment to force pip to install/update things in requirements.txt, recomment to allow the bot to run
 #import bhava-agra
