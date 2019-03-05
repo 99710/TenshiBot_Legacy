@@ -1,4 +1,4 @@
-#Gitgub ok
+#Github ok
 #TenshiBot main code, Created by 99710 (formerly known as Harry99710)
 #Uses https://github.com/Just-Some-Bots/MusicBot as a code base, music related code/commands removed
 #Tenshi is intended to be running on a debian linux VPS under root, certian commands may break if running on Windows/MacOS or another linux distro
@@ -22,8 +22,12 @@ import requests
 import pybooru
 import pixivpy3
 import cleverbot_io
+#import saucenaopy
+from saucenaopy import SauceNAO
 
-#May get moved to cmd_ai
+#Uncomment to force pip to install/update things in requirements.txt, recomment to allow the bot to run
+#import bhava-agra
+
 bot = cleverbot_io.set(user='', key='', nick='Tenko_AI')
 
 
@@ -56,6 +60,7 @@ from pybooru import Danbooru
 from google_images_download import google_images_download
 from pixivpy3 import *
 from weather import Weather, Unit
+#from saucenaopy import SauceNAO
 
 api = AppPixivAPI()
 
@@ -964,7 +969,7 @@ class MusicBot(discord.Client):
         """
         await self.safe_send_message(channel, "I rate it " + str(randint(0,10)) + "/10")
 
-    async def cmd_techno(self, channel):
+    async def cmd_techno2139849324234(self, channel):
         """
         Techno.bat, I wonder what this file does...
         """
@@ -1112,6 +1117,12 @@ class MusicBot(discord.Client):
 
     async def cmd_honk(self, channel, message):
         await self.send_file(channel, "pics/touhou/honk/" + random.choice(os.listdir("pics/touhou/honk")))
+
+    async def cmd_murasa(self, channel, message):
+        await self.send_file(channel, "pics/touhou/murasa/" + random.choice(os.listdir("pics/touhou/murasa")))
+
+    async def cmd_mamizou(self, channel, message):
+        await self.send_file(channel, "pics/touhou/mamizou/" + random.choice(os.listdir("pics/touhou/mamizou")))
 
     async def cmd_shou(self, channel, message):
         await self.send_file(channel, "pics/touhou/shou/" + random.choice(os.listdir("pics/touhou/shou")))
@@ -1503,36 +1514,40 @@ class MusicBot(discord.Client):
 
 #Cleverbot_io API, apparently this one is free. may still go off topic tho
     async def cmd_ai(client, message, question, channel):
+        #this cleverbot engine has a delay so send a typing status to look like something is happening
+        await client.send_typing(channel)
         unsplit = message.content.split("ai")
         split = unsplit[1]
         answer = (bot.ask(split))
+        #await client.send_typing(channel)
         await client.send_message(message.channel, answer)
 
-    async def cmd_weather(client, message, location, channel):
+#Command weather module returns invalid URL, disabled command for now. if uncommenting do not uncomment the things with ## unless testing
+#    async def cmd_weather(client, message, location, channel):
 
 
 #checking if the user specified gensokyo
 
-        if message.content == "=weather gensokyo":
+#        if message.content == "=weather gensokyo":
 
-#            await client.safe_send_message(channel, "Sunny skies from here in heaven")
-            return Response(random.choice(gensokyoweather), delete_after=0)
+##            await client.safe_send_message(channel, "Sunny skies from here in heaven")
+#            return Response(random.choice(gensokyoweather), delete_after=0)
 
-        if message.content == "=weather enviromentcanada":
+#        if message.content == "=weather enviromentcanada":
 
 #            await client.send_file(channel, "pics/enviromentcanada.png")
-            return Response(random.choice(enviromentcanada), delete_after=0)
+##            return Response(random.choice(enviromentcanada), delete_after=0)
 
-        else:
+#        else:
 
-            weather = Weather(unit=Unit.CELSIUS)
+#            weather = Weather(unit=Unit.CELSIUS)
 
-        location = weather.lookup_by_location(message.content[len("=weather "):].strip())
-#        forecasts = location.forecast
-        condition = location.condition
-#        for forecast in forecasts:
+#        location = weather.lookup_by_location(message.content[len("=weather "):].strip())
+##        forecasts = location.forecast
+#        condition = location.condition
+##        for forecast in forecasts:
 
-        await client.send_message(message.channel, "Current Conditions: " + condition.text +  "\n" + "Temperature: " + condition.temp + "C" )
+#        await client.send_message(message.channel, "Current Conditions: " + condition.text +  "\n" + "Temperature: " + condition.temp + "C" )
 
 
     async def cmd_aireset(self, message, channel):
@@ -1540,7 +1555,7 @@ class MusicBot(discord.Client):
         Reset the cleverbot conversation (useful if TenshiBot starts being random)
         """
         from cleverwrap import CleverWrap
-        cw = CleverWrap("")
+        cw = CleverWrap("CCC4t_bAYZN_ZTfkJ976SMVDhYg")
         cw.reset()
         await self.safe_send_message(channel, ":arrows_counterclockwise:")
 
