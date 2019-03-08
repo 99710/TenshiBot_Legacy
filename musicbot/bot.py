@@ -1554,7 +1554,7 @@ class MusicBot(discord.Client):
         Reset the cleverbot conversation (useful if TenshiBot starts being random)
         """
         from cleverwrap import CleverWrap
-        cw = CleverWrap("CCC4t_bAYZN_ZTfkJ976SMVDhYg")
+        cw = CleverWrap("")
         cw.reset()
         await self.safe_send_message(channel, ":arrows_counterclockwise:")
 
