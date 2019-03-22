@@ -11,6 +11,7 @@ import shlex
 import shutil
 import inspect
 import aiohttp
+import aiohttp
 import discord
 import asyncio
 import traceback
@@ -1117,6 +1118,9 @@ class MusicBot(discord.Client):
     async def cmd_honk(self, channel, message):
         await self.send_file(channel, "pics/touhou/honk/" + random.choice(os.listdir("pics/touhou/honk")))
 
+    async def cmd_rinnosuke(self, channel, message):
+        await self.send_file(channel, "pics/touhou/rinnosuke/" + random.choice(os.listdir("pics/touhou/rinnosuke")))
+
     async def cmd_murasa(self, channel, message):
         await self.send_file(channel, "pics/touhou/murasa/" + random.choice(os.listdir("pics/touhou/murasa")))
 
@@ -1454,9 +1458,10 @@ class MusicBot(discord.Client):
     async def cmd_logicsymbolicdream(self, channel, message):
         await self.safe_send_message(channel, "*?*")
 
-#    @owner_only
-#    async def cmd_test(self):
-#        return Response(self.servers(), delete_after=0)
+#Re-enabled this, it's obsolete by the about command anyway...		
+    @owner_only
+    async def cmd_servercount(self):
+        return Response(self.servers(), delete_after=0)
 
     @owner_only
     async def cmd_setstatus(self, channel, message):
@@ -1496,20 +1501,6 @@ class MusicBot(discord.Client):
         await self.send_file(channel, "pics/stop.jpg")
         await self.safe_send_message(message.channel, "*" + message.content[len("~stop "):].strip() + "* has been STOPPED!")
 
-#cleverbot stuff, initially used a unofficial API which worked fine but then got dumb after moving to official api
-# Note: cleverbot commands were disabled due to the official API not working as well as before and them charging for it
-
-#    async def cmd_ai(client, message, question, channel):
-#        """
-#        """
-#        from cleverwrap import CleverWrap
-#        cw = CleverWrap("")
-#        unsplit = message.content.split("ai")
-#        split = unsplit[1]
-#        answer = (cw.say(split))
-#        await client.send_message(message.channel, answer)
-#        await asyncio.sleep(30)
-#        cw.reset()
 
 #Cleverbot_io API, apparently this one is free. may still go off topic tho
     async def cmd_ai(client, message, question, channel):
@@ -1521,42 +1512,22 @@ class MusicBot(discord.Client):
         #await client.send_typing(channel)
         await client.send_message(message.channel, answer)
 
-#Command weather module returns invalid URL, disabled command for now. if uncommenting do not uncomment the things with ## unless testing
+
 #    async def cmd_weather(client, message, location, channel):
 
 
 #checking if the user specified gensokyo
 
 #        if message.content == "=weather gensokyo":
-
-##            await client.safe_send_message(channel, "Sunny skies from here in heaven")
 #            return Response(random.choice(gensokyoweather), delete_after=0)
-
 #        if message.content == "=weather enviromentcanada":
-
 #            await client.send_file(channel, "pics/enviromentcanada.png")
-##            return Response(random.choice(enviromentcanada), delete_after=0)
-
 #        else:
-
 #            weather = Weather(unit=Unit.CELSIUS)
-
 #        location = weather.lookup_by_location(message.content[len("=weather "):].strip())
-##        forecasts = location.forecast
 #        condition = location.condition
-##        for forecast in forecasts:
-
 #        await client.send_message(message.channel, "Current Conditions: " + condition.text +  "\n" + "Temperature: " + condition.temp + "C" )
 
-
-    async def cmd_aireset(self, message, channel):
-        """
-        Reset the cleverbot conversation (useful if TenshiBot starts being random)
-        """
-        from cleverwrap import CleverWrap
-        cw = CleverWrap("")
-        cw.reset()
-        await self.safe_send_message(channel, ":arrows_counterclockwise:")
 
     async def cmd_pepe(self, channel, message):
         """
@@ -1574,9 +1545,6 @@ class MusicBot(discord.Client):
         """
         Flip a coin
         """
-# note: was added temporarily for a server
-#        await self.safe_send_message(channel, "Now for the CC lotto coinflipping event..." )
-#        await asyncio.sleep(0.7) 
         await self.safe_send_message(channel, "Flipping Coin..." )
         await asyncio.sleep(0.7) 
         return Response(random.choice(coinflip), delete_after=0)
@@ -1650,6 +1618,7 @@ class MusicBot(discord.Client):
         """
         await self.add_reaction(message, message.content[len("=react "):].strip())
 
+    @owner_only		
     async def cmd_pin2(self, channel, message):
         """
         Delete say, a say command that deletes the invoking message. usage is same as standard say command
@@ -1677,6 +1646,10 @@ class MusicBot(discord.Client):
         """
         await self.safe_send_message(message.channel, "`" + message.content[len("=md"):].strip() + "`")
 
+#dev_?
+#(idk what this was, i think i was testing something with RTEL)
+
+    @owner_only		
     async def cmd_sensay(self, channel, message):
         """
         Delete say, a say command that deletes the invoking message. usage is same as standard say command
@@ -1742,6 +1715,8 @@ class MusicBot(discord.Client):
         commands = emote.read()
         await self.safe_send_message(author, commands)
         await self.safe_send_message(channel, ":white_check_mark: Sent, check PMs")
+
+#dev_console
         
     @owner_only
     async def cmd_console(self, channel, command, message):
@@ -1752,20 +1727,8 @@ class MusicBot(discord.Client):
         os.system(message.content[len("=console"):].strip())
         await self.safe_send_message(channel, ":warning: Command run, check the log for any errors")
 
-    @owner_only
-    async def cmd_post(self, channel, message):
-        """
-        ?
-        """
-#        requests.post('http://bots.discord.pw/api/bots/252442396879486976/stats', data = {'':'server_count = 218'})
-        await self.safe_send_message(channel, ":warning: done")
-
-#api posting for the bot list sites, will have to implent this properly sometime instead of a command
-#bots.discord.pw disable due to URL change and it not working properly
-
-        requests.post('https://discordbots.org/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
-#        requests.post('http://bots.discord.pw/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
-
+#dev_silent_nickname_set		
+		
     @owner_only
     async def cmd_ssetnick(self, server, channel, message, leftover_args, nick):
         """
@@ -1783,6 +1746,8 @@ class MusicBot(discord.Client):
             raise exceptions.CommandError(e, expire_in=20)
         await self.safe_delete_message(message, quiet=True)
 
+#dev_send_file
+		
     @owner_only
     async def cmd_sendfile(self, channel, file, message):
         """
@@ -1794,12 +1759,6 @@ class MusicBot(discord.Client):
         VPS Logfiles - /var/log/
         """
         await self.send_file(channel, message.content[len("~sendfile "):].strip())
-
-#    async def cmd_website(self, channel, message):
-#        """
-#        Website link
-#        """
-#        await self.safe_send_message(channel, "http://www.hakurei.co.uk/tenshibot/")
 
     @owner_only
     async def cmd_leaveserver(self, id, channel):
@@ -1863,6 +1822,7 @@ class MusicBot(discord.Client):
 #            await self.safe_send_message(channel, inv)
 #            await self.safe_send_message(channel, ">> {0.name}  (ID: {0.id}) <<".format(target))
 
+#dev_ban_test
 
     @owner_only
     async def cmd_tenshiban(self, id, channel, author):
@@ -1876,6 +1836,8 @@ class MusicBot(discord.Client):
         else:
             inv = await self.ban(target)
 
+#dev_kick_test
+			
     @owner_only
     async def cmd_tenshikick(self, id, channel, author):
         """
@@ -1898,6 +1860,7 @@ class MusicBot(discord.Client):
         else:
             await self.safe_send_message(channel, "Neko Miko sanae")
 
+#dev_kick_test_2
 
     @owner_only
     async def cmd_hammer(self, server, member, channel, message):
@@ -1946,6 +1909,8 @@ class MusicBot(discord.Client):
             await self.safe_send_message(author, commands)
             await self.safe_send_message(channel, ":white_check_mark: Sent, check PMs")
 
+#help_commands			
+			
 # --help sections--
 #1: Touhou
 #2: General
@@ -1996,6 +1961,7 @@ class MusicBot(discord.Client):
         em.set_author(name='embed', icon_url="http://hakurei.co.uk/neko.png")
         await self.send_message(channel, embed=em)
 
+#Net neturality awareness command		
     async def cmd_neturalnet(self, channel, message):
 
         em = discord.Embed(title='TenshiBot has been blocked by your ISP', description='visit https://battleforthenet.com to prevent this', colour=0xDEADBF)
