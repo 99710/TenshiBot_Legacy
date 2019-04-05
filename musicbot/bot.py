@@ -1,6 +1,7 @@
 #Github ok
 #TenshiBot main code, Created by 99710 (formerly known as Harry99710)
 #Uses https://github.com/Just-Some-Bots/MusicBot as a code base, music related code/commands removed
+#Some code for sbooru is from EcchiBot 
 #Tenshi is intended to be running on a debian linux VPS under root, certian commands may break if running on Windows/MacOS or another linux distro
 
 
@@ -24,6 +25,9 @@ import pybooru
 import pixivpy3
 import cleverbot_io
 #import saucenaopy
+import praw
+import lxml
+from bs4 import BeautifulSoup
 
 #Uncomment to force pip to install/update things in requirements.txt, recomment to allow the bot to run
 #import bhava-agra
@@ -68,6 +72,13 @@ api = AppPixivAPI()
 load_opus_lib()
 st = time.time()
 
+def getID(str1):
+    return str1[str1.find("id=") + 3]
+
+def getFileURL(str1):
+    first = str1.find("file_url=")
+    second = str1.find('"', first+11)
+    return str1[first:second]
 
 
 
@@ -1244,10 +1255,51 @@ class MusicBot(discord.Client):
     async def cmd_aya(self, channel, message):
         await self.send_file(channel, "pics/touhou/aya/" + random.choice(os.listdir("pics/touhou/aya")))
 
-    async def cmd_cirno(self, channel, message):
-        await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+    async def cmd_cirno(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
         #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
         #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+        if message.content == "=cirno local":
+            await client.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))    
+        else:
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'Cirno'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://safebooru.org/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, 'http:' + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
     async def cmd_nitori(self, channel, message):
         await self.send_file(channel, "pics/touhou/nitori/" + random.choice(os.listdir("pics/touhou/nitori")))
 
@@ -1972,6 +2024,65 @@ class MusicBot(discord.Client):
     @owner_only
     async def cmd_rsay(self, channel, message):
         await self.send_message(discord.Object(id=369389053017194497), message.content[len("=rsay "):].strip())
+
+#dev_gbooru_test
+#First steps to getting sbooru working, leave this as owner only as gbooru can return R-18 stuff
+    @owner_only
+    async def cmd_gboorutest(client, author, message, channel):
+        if len(message.content.split()) == 1:
+            r = requests.get('http://gelbooru.com/index.php?page=post&s=random').url
+            pid = getID(r)
+            r2 = requests.get('http://gelbooru.com/index.php?page=dapi&s=post&q=index&id=' + str(pid))
+            if r2.status_code == 200:
+                soup = BeautifulSoup(r2.text, "lxml")
+                pmsg = ((soup.find('post'))['file_url'])
+                msg = pmsg.format(message)
+                await client.send_message(message.channel, msg)
+                #source = ((soup.find('post'))['source'])
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'Unable to find tag'
+                await client.send_message(message.channel, msg)
+
+
+#dev_sbooru_search
+    async def cmd_safebooru(client, author, message, channel):
+            s = message.content.split()
+            r = requests.get('http://safebooru.org/index.php?page=dapi&s=post&q=index&tags=' + s[1])
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+
+                #if there are less than 100 posts, stay on page 0
+                page = random.randint(0, maxpage)
+
+                #make the soup and get all posts
+                t = soup.find('posts')
+                p = t.find_all('post')
+
+                #if there are no posts, something is wrong
+                if num == 0:
+                    msg = 'No posts found, are the tags spelt correctly?'
+                else:
+                    # only one page cus <100 results
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    # if last page assuming >1 page, max element is last
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+                await client.send_message(message.channel, msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
 
 
 
