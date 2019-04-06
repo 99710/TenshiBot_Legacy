@@ -1938,6 +1938,13 @@ class MusicBot(discord.Client):
             await self.safe_send_message(channel, "View my commands here http://193.70.38.209/tb_command.html")
             return
 
+        if message.content == "=help safebooru":
+
+            cmds = open("commands/sbooru.txt", "r")
+            commands = cmds.read()
+            await self.safe_send_message(channel, commands)
+            return
+
 
         else:
 
@@ -2046,9 +2053,23 @@ class MusicBot(discord.Client):
 
 
 #dev_sbooru_search
+    @owner_only
     async def cmd_safebooru(client, author, message, channel):
             s = message.content.split()
-            r = requests.get('http://safebooru.org/index.php?page=dapi&s=post&q=index&tags=' + s[1])
+
+#tag blocking test
+#Don't want this being abused, block these tags
+#fix this before making this feature public
+
+            if s == 'rating:explicit': 
+                msg = 'test'
+                await client.send_message(message.channel, msg)
+
+
+            else:
+#lets try hardcoding the url to always have rating:safe
+#Safebooru seems to not like it if you try and search 2 rating tags at once so this should work
+                r = requests.get('http://safebooru.org/index.php?page=dapi&s=post&q=index&tags=rating:safe+' + s[1])
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -2078,7 +2099,9 @@ class MusicBot(discord.Client):
                     #source = 'no source given'
                     #if len(pic['source']) != 0:
                         #source = pic['source']
-                await client.send_message(message.channel, msg)
+
+#append http: manually because it doesn't do it automatically for whatever reason
+                await client.send_message(message.channel, 'http:' + msg)
                 #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
