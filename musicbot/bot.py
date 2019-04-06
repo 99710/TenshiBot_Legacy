@@ -5,6 +5,30 @@
 #Tenshi is intended to be running on a debian linux VPS under root, certian commands may break if running on Windows/MacOS or another linux distro
 
 
+
+###Parameters###
+
+#booru URL, used for touhou images and safebooru command
+booru = 'safebooru.org'
+
+#booru rating
+#options are: safe, questionable, explicit
+boorurating = 'safe'
+
+#append text to the start of booru url output
+#change this if the bot is sending malformed booru urls
+booruappend = 'http:'
+
+#bot version
+botver = '1.4.2'
+
+#bot error message
+errmsg = ':warning: A system error has occured'
+
+#discordbots.org API key
+dbo_api = ''
+
+
 import os
 import sys
 import time
@@ -32,8 +56,8 @@ from bs4 import BeautifulSoup
 #Uncomment to force pip to install/update things in requirements.txt, recomment to allow the bot to run
 #import bhava-agra
 
+#cleverbot.io config
 bot = cleverbot_io.set(user='', key='', nick='Tenko_AI')
-
 
 from discord import utils
 from discord.object import Object
@@ -465,7 +489,7 @@ class MusicBot(discord.Client):
     async def on_ready(self):
         print('\rTenshiBot System Initialised!')
         print('\rPosting server count...')
-        requests.post('https://discordbots.org/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':''}, data={'server_count':len(self.servers)})
+        requests.post('https://discordbots.org/api/bots/{}/stats'.format(self.user.id),headers={'Authorization':dbo_api}, data={'server_count':len(self.servers)})
         print('\rDone!, contiuning startup...')
 
         if self.config.owner_id == self.user.id:
@@ -933,7 +957,7 @@ class MusicBot(discord.Client):
         except Exception:
             traceback.print_exc()
             if self.config.debug_mode:
-                await self.safe_send_message(message.channel, ":warning: A system error has occured")
+                await self.safe_send_message(message.channel, errmsg)
 
 
 
@@ -1294,7 +1318,7 @@ class MusicBot(discord.Client):
                         #source = pic['source']
 
 #pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
-                await client.send_message(message.channel, 'http:' + msg)
+                await client.send_message(message.channel, booruappend + msg)
                 #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
@@ -2069,7 +2093,7 @@ class MusicBot(discord.Client):
             else:
 #lets try hardcoding the url to always have rating:safe
 #Safebooru seems to not like it if you try and search 2 rating tags at once so this should work
-                r = requests.get('http://safebooru.org/index.php?page=dapi&s=post&q=index&tags=rating:safe+' + s[1])
+                r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=rating:' + boorurating + '+' + s[1])
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -2101,7 +2125,7 @@ class MusicBot(discord.Client):
                         #source = pic['source']
 
 #append http: manually because it doesn't do it automatically for whatever reason
-                await client.send_message(message.channel, 'http:' + msg)
+                await client.send_message(message.channel, booruappend + msg)
                 #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
