@@ -57,7 +57,7 @@ from bs4 import BeautifulSoup
 #import bhava-agra
 
 #cleverbot.io config
-bot = cleverbot_io.set(user='24mCAkAhJfU63ADf', key='55mI7I8DiFMOHHINRia73eiS7Ylx2IYu', nick='Tenko_AI')
+bot = cleverbot_io.set(user='', key='', nick='Tenko_AI')
 
 from discord import utils
 from discord.object import Object
