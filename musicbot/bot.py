@@ -2337,8 +2337,11 @@ class MusicBot(discord.Client):
                 p = t.find_all('post')
 
                 #if there are no posts, something is wrong
-                if num == 0:
+                if num == 0: 
                     msg = 'No posts found, are the tags spelt correctly?'
+                    await client.send_message(message.channel, msg)
+                    return
+
                 else:
                     # only one page cus <100 results
                     if num < 100:
