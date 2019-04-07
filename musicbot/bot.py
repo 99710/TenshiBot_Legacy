@@ -28,6 +28,11 @@ errmsg = ':warning: A system error has occured'
 #discordbots.org API key
 dbo_api = ''
 
+#Cleverbot.io config
+cb_user = ''
+cb_key = ''
+cb_nick = 'Tenko_AI'
+
 
 import os
 import sys
@@ -55,9 +60,6 @@ from bs4 import BeautifulSoup
 
 #Uncomment to force pip to install/update things in requirements.txt, recomment to allow the bot to run
 #import bhava-agra
-
-#cleverbot.io config
-bot = cleverbot_io.set(user='', key='', nick='Tenko_AI')
 
 from discord import utils
 from discord.object import Object
@@ -1267,8 +1269,8 @@ class MusicBot(discord.Client):
     async def cmd_konngara(self, channel, message):
         await self.send_file(channel, "pics/touhou/konngara/" + random.choice(os.listdir("pics/touhou/konngara")))
 
-    async def cmd_meiling(self, channel, message):
-        await self.send_file(channel, "pics/touhou/meiling/" + random.choice(os.listdir("pics/touhou/meiling")))
+#    async def cmd_meiling(self, channel, message):
+#        await self.send_file(channel, "pics/touhou/meiling/" + random.choice(os.listdir("pics/touhou/meiling")))
 
     async def cmd_yuyuko(self, channel, message):
         await self.send_file(channel, "pics/touhou/yuyuko/" + random.choice(os.listdir("pics/touhou/yuyuko")))
@@ -1278,51 +1280,6 @@ class MusicBot(discord.Client):
 
     async def cmd_aya(self, channel, message):
         await self.send_file(channel, "pics/touhou/aya/" + random.choice(os.listdir("pics/touhou/aya")))
-
-    async def cmd_cirno(client, channel, message):
-        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
-        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
-        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
-
-
-#local fallback, inase sbooru doesn't work
-        if message.content == "=cirno local":
-            await client.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))    
-        else:
-
-#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
-            char = 'Cirno'
-
-#solo tag to deal with any manga images
-            r = requests.get('http://safebooru.org/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
-            if r.status_code == 200:
-                soup = BeautifulSoup(r.text, "lxml")
-                num = int(soup.find('posts')['count'])
-                maxpage = int(round(num/100))
-                page = random.randint(0, maxpage)
-                t = soup.find('posts')
-                p = t.find_all('post')
-                if num == 0:
-                    msg = 'No posts found'
-                else:
-                    if num < 100:
-                        pic = p[random.randint(0,num-1)]
-                    elif page == maxpage:
-                        pic = p[random.randint(0,num%100 - 1)]
-                    else:
-                        pic = p[random.randint(0,99)]
-                    msg = pic['file_url']
-                    #default is no source
-                    #source = 'no source given'
-                    #if len(pic['source']) != 0:
-                        #source = pic['source']
-
-#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
-                await client.send_message(message.channel, booruappend + msg)
-                #await client.send_message(message.channel, source)
-            else:
-                msg = 'An error has occured'
-                await client.send_message(message.channel, msg)
 
     async def cmd_nitori(self, channel, message):
         await self.send_file(channel, "pics/touhou/nitori/" + random.choice(os.listdir("pics/touhou/nitori")))
@@ -1342,8 +1299,8 @@ class MusicBot(discord.Client):
     async def cmd_youmu(self, channel):
         await self.send_file(channel, "pics/touhou/youmu/" + random.choice(os.listdir("pics/touhou/youmu")))
 
-    async def cmd_tenshi(self, channel):
-        await self.send_file(channel, "pics/touhou/tenshi/" + random.choice(os.listdir("pics/touhou/tenshi")))
+#    async def cmd_tenshi(self, channel):
+#        await self.send_file(channel, "pics/touhou/tenshi/" + random.choice(os.listdir("pics/touhou/tenshi")))
 
     async def cmd_koishi(self, channel):
         await self.send_file(channel, "pics/touhou/koishi/" + random.choice(os.listdir("pics/touhou/koishi")))
@@ -1354,8 +1311,8 @@ class MusicBot(discord.Client):
     async def cmd_moko(self, channel):
         await self.send_file(channel, "pics/touhou/moko/" + random.choice(os.listdir("pics/touhou/moko")))
 
-    async def cmd_reimu(self, channel):
-        await self.send_file(channel, "pics/touhou/reimu/" + random.choice(os.listdir("pics/touhou/reimu")))
+#    async def cmd_reimu(self, channel):
+#        await self.send_file(channel, "pics/touhou/reimu/" + random.choice(os.listdir("pics/touhou/reimu")))
 
     async def cmd_satori(self, channel):
         await self.send_file(channel, "pics/touhou/satori/" + random.choice(os.listdir("pics/touhou/satori")))
@@ -1363,8 +1320,8 @@ class MusicBot(discord.Client):
     async def cmd_pc98(self, channel):
         await self.send_file(channel, "pics/touhou/pc98/" + random.choice(os.listdir("pics/touhou/pc98")))
 
-    async def cmd_sakuya(self, channel):
-        await self.send_file(channel, "pics/touhou/sakuya/" + random.choice(os.listdir("pics/touhou/sakuya")))
+#    async def cmd_sakuya(self, channel):
+#        await self.send_file(channel, "pics/touhou/sakuya/" + random.choice(os.listdir("pics/touhou/sakuya")))
 
     async def cmd_wan(self, channel):
         await self.send_file(channel, "pics/touhou/momiji/" + random.choice(os.listdir("pics/touhou/momiji")))
@@ -1375,8 +1332,8 @@ class MusicBot(discord.Client):
     async def cmd_kagerou(self, channel):
         await self.send_file(channel, "pics/touhou/kagerou/" + random.choice(os.listdir("pics/touhou/kagerou")))
 
-    async def cmd_marisa(self, channel):
-        await self.send_file(channel, "pics/touhou/marisa/" + random.choice(os.listdir("pics/touhou/marisa")))
+#    async def cmd_marisa(self, channel):
+#        await self.send_file(channel, "pics/touhou/marisa/" + random.choice(os.listdir("pics/touhou/marisa")))
 
     async def cmd_reisen(self, channel):
         await self.send_file(channel, "pics/touhou/reisen/" + random.choice(os.listdir("pics/touhou/reisen")))
@@ -1522,6 +1479,276 @@ class MusicBot(discord.Client):
     async def cmd_touhou(self, channel):
         await self.send_file(channel, "pics/touhou/" + random.choice(os.listdir("pics/touhou")))
 
+#th_img_sbooru
+
+    async def cmd_cirno(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
+        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+        if message.content == "=cirno local":
+            await client.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))    
+        else:
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'Cirno'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
+
+    async def cmd_reimu(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
+        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'hakurei_reimu'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
+
+    async def cmd_marisa(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
+        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'kirisame_marisa'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
+
+    async def cmd_sakuya(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
+        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'izayoi_sakuya'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
+
+
+    async def cmd_tenshi(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
+        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'hinanawi_tenshi'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
+
+
+    async def cmd_meiling(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
+        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'hong_meiling'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
 #e_egg
 
     async def cmd_leisuresonorusdream(self, channel, message):
@@ -1579,7 +1806,11 @@ class MusicBot(discord.Client):
 
 
 #Cleverbot_io API, apparently this one is free. may still go off topic tho
+
+
+
     async def cmd_ai(client, message, question, channel):
+        bot = cleverbot_io.set(user= cb_user , key= cb_key , nick= cb_nick )
         #this cleverbot engine has a delay so send a typing status to look like something is happening
         await client.send_typing(channel)
         unsplit = message.content.split("ai")
@@ -2077,7 +2308,6 @@ class MusicBot(discord.Client):
 
 
 #dev_sbooru_search
-    @owner_only
     async def cmd_safebooru(client, author, message, channel):
             s = message.content.split()
 
