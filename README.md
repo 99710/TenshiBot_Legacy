@@ -16,10 +16,8 @@
 
 <h2> Todo (at some point) </h2>
 <ul>
-  <li>Make image commands pull images from danbooru/pixiv instead of locally</li>
   <li>Add @mention command prefix, "=" is used for other bots which causes some clashes</li>
   <li>Rewrite the base code, current base code was never designed for this and is slow at starting up</li>
-  <li>Help command overhaul</li>
   <li>Move to discord.py rewrite</li>
   
 </ul>
