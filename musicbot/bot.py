@@ -1275,8 +1275,8 @@ class MusicBot(discord.Client):
     async def cmd_yuyuko(self, channel, message):
         await self.send_file(channel, "pics/touhou/yuyuko/" + random.choice(os.listdir("pics/touhou/yuyuko")))
 
-    async def cmd_flandre(self, channel, message):
-        await self.send_file(channel, "pics/touhou/flandre/" + random.choice(os.listdir("pics/touhou/flandre")))
+#    async def cmd_flandre(self, channel, message):
+#        await self.send_file(channel, "pics/touhou/flandre/" + random.choice(os.listdir("pics/touhou/flandre")))
 
     async def cmd_aya(self, channel, message):
         await self.send_file(channel, "pics/touhou/aya/" + random.choice(os.listdir("pics/touhou/aya")))
@@ -1293,8 +1293,8 @@ class MusicBot(discord.Client):
     async def cmd_patchy(self, channel, message):
         await self.send_file(channel, "pics/touhou/patchy/" + random.choice(os.listdir("pics/touhou/patchy")))
 
-    async def cmd_rumia(self, channel):
-        await self.send_file(channel, "pics/touhou/rumia/" + random.choice(os.listdir("pics/touhou/rumia")))
+#    async def cmd_rumia(self, channel):
+#        await self.send_file(channel, "pics/touhou/rumia/" + random.choice(os.listdir("pics/touhou/rumia")))
 
     async def cmd_youmu(self, channel):
         await self.send_file(channel, "pics/touhou/youmu/" + random.choice(os.listdir("pics/touhou/youmu")))
@@ -1496,7 +1496,7 @@ class MusicBot(discord.Client):
             char = 'Cirno'
 
 #solo tag to deal with any manga images
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1540,7 +1540,7 @@ class MusicBot(discord.Client):
             char = 'hakurei_reimu'
 
 #solo tag to deal with any manga images
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1584,7 +1584,7 @@ class MusicBot(discord.Client):
             char = 'kirisame_marisa'
 
 #solo tag to deal with any manga images
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1628,7 +1628,7 @@ class MusicBot(discord.Client):
             char = 'izayoi_sakuya'
 
 #solo tag to deal with any manga images
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1673,7 +1673,7 @@ class MusicBot(discord.Client):
             char = 'hinanawi_tenshi'
 
 #solo tag to deal with any manga images
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1718,7 +1718,95 @@ class MusicBot(discord.Client):
             char = 'hong_meiling'
 
 #solo tag to deal with any manga images
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
+
+
+    async def cmd_flandre(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
+        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'flandre_scarlet'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                    #default is no source
+                    #source = 'no source given'
+                    #if len(pic['source']) != 0:
+                        #source = pic['source']
+
+#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, source)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
+    async def cmd_rumia(client, channel, message):
+        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
+        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
+        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
+
+
+#local fallback, inase sbooru doesn't work
+
+#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
+            char = 'rumia'
+
+#solo tag to deal with any manga images
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
