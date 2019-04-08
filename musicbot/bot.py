@@ -31,7 +31,7 @@ dbo_api = ''
 #Cleverbot.io config
 cb_user = ''
 cb_key = ''
-cb_nick = 'Tenko_AI'
+cb_nick = ''
 
 
 import os
@@ -1529,17 +1529,7 @@ class MusicBot(discord.Client):
 
 
     async def cmd_reimu(client, channel, message):
-        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
-        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
-        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
-
-
-#local fallback, inase sbooru doesn't work
-
-#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
             char = 'hakurei_reimu'
-
-#solo tag to deal with any manga images
             r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
@@ -1558,14 +1548,7 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                    #default is no source
-                    #source = 'no source given'
-                    #if len(pic['source']) != 0:
-                        #source = pic['source']
-
-#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
                 await client.send_message(message.channel, booruappend + msg)
-                #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1573,17 +1556,7 @@ class MusicBot(discord.Client):
 
 
     async def cmd_marisa(client, channel, message):
-        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
-        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
-        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
-
-
-#local fallback, inase sbooru doesn't work
-
-#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
             char = 'kirisame_marisa'
-
-#solo tag to deal with any manga images
             r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
@@ -1602,14 +1575,7 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                    #default is no source
-                    #source = 'no source given'
-                    #if len(pic['source']) != 0:
-                        #source = pic['source']
-
-#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
                 await client.send_message(message.channel, booruappend + msg)
-                #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1617,17 +1583,7 @@ class MusicBot(discord.Client):
 
 
     async def cmd_sakuya(client, channel, message):
-        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
-        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
-        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
-
-
-#local fallback, inase sbooru doesn't work
-
-#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
             char = 'izayoi_sakuya'
-
-#solo tag to deal with any manga images
             r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
@@ -1645,15 +1601,8 @@ class MusicBot(discord.Client):
                         pic = p[random.randint(0,num%100 - 1)]
                     else:
                         pic = p[random.randint(0,99)]
-                    msg = pic['file_url']
-                    #default is no source
-                    #source = 'no source given'
-                    #if len(pic['source']) != 0:
-                        #source = pic['source']
-
-#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
+                    msg = pic['file_url'] 
                 await client.send_message(message.channel, booruappend + msg)
-                #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1662,17 +1611,7 @@ class MusicBot(discord.Client):
 
 
     async def cmd_tenshi(client, channel, message):
-        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
-        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
-        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
-
-
-#local fallback, inase sbooru doesn't work
-
-#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
             char = 'hinanawi_tenshi'
-
-#solo tag to deal with any manga images
             r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
@@ -1691,14 +1630,7 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                    #default is no source
-                    #source = 'no source given'
-                    #if len(pic['source']) != 0:
-                        #source = pic['source']
-
-#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
                 await client.send_message(message.channel, booruappend + msg)
-                #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1707,17 +1639,7 @@ class MusicBot(discord.Client):
 
 
     async def cmd_meiling(client, channel, message):
-        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
-        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
-        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
-
-
-#local fallback, inase sbooru doesn't work
-
-#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
             char = 'hong_meiling'
-
-#solo tag to deal with any manga images
             r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
@@ -1736,14 +1658,7 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                    #default is no source
-                    #source = 'no source given'
-                    #if len(pic['source']) != 0:
-                        #source = pic['source']
-
-#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
                 await client.send_message(message.channel, booruappend + msg)
-                #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1752,17 +1667,7 @@ class MusicBot(discord.Client):
 
 
     async def cmd_flandre(client, channel, message):
-        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
-        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
-        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
-
-
-#local fallback, inase sbooru doesn't work
-
-#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
             char = 'flandre_scarlet'
-
-#solo tag to deal with any manga images
             r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
@@ -1781,31 +1686,14 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                    #default is no source
-                    #source = 'no source given'
-                    #if len(pic['source']) != 0:
-                        #source = pic['source']
-
-#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
                 await client.send_message(message.channel, booruappend + msg)
-                #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
 
 
     async def cmd_rumia(client, channel, message):
-        #await self.send_file(channel, "pics/touhou/cirno/" + random.choice(os.listdir("pics/touhou/cirno")))
-        #await self.safe_send_message(channel, "Cirno images are being refreshed, please wait warmly...")
-        #await self.safe_send_message(channel, "also happy Cirno day from the bot dev")
-
-
-#local fallback, inase sbooru doesn't work
-
-#Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
             char = 'rumia'
-
-#solo tag to deal with any manga images
             r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
@@ -1824,14 +1712,8 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                    #default is no source
-                    #source = 'no source given'
-                    #if len(pic['source']) != 0:
-                        #source = pic['source']
 
-#pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
                 await client.send_message(message.channel, booruappend + msg)
-                #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
