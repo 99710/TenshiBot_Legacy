@@ -14,7 +14,6 @@
 <h2> Known issues </h2>
 <ul>
   <li>Bot takes forever to startup - Console says it's processing chunks which takes a while, probably due to my low spec server it runs on</li>
-  <li>Bot spits out "INFO:discord.gateway:Websocket closed with 1006 (), attempting a reconnect." in console - it seems to automatically reconnect</li>
   <li>Only 1 command prefix can be added - AFAIK this is a limitation of the base code. i have experimented with this with no luck</li>
   
 </ul>
