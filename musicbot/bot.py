@@ -13,7 +13,13 @@ booru = 'safebooru.org'
 
 #booru rating
 #options are: safe, questionable, explicit
+#affects the safebooru command only
 boorurating = 'safe'
+
+#booru tag blacklist
+#results which have these tags won't be shown in the touhou commands
+#does not affect the safebooru command
+boorublacklist = '-underwear+-sideboob+-pov_feet+-underboob+-upskirt+-sexually_suggestive+-ass'
 
 #append text to the start of booru url output
 #change this if the bot is sending malformed booru urls
@@ -31,7 +37,7 @@ dbo_api = ''
 #Cleverbot.io config
 cb_user = ''
 cb_key = ''
-cb_nick = ''
+cb_nick = 'Tenko_AI'
 
 
 import os
@@ -1132,8 +1138,8 @@ class MusicBot(discord.Client):
     async def cmd_saki(self, channel, message):
         await self.send_file(channel, "pics/saki/" + random.choice(os.listdir("pics/saki")))
 
-    async def cmd_suguri(self, channel, message):
-        await self.send_file(channel, "pics/suguri/" + random.choice(os.listdir("pics/suguri")))
+    #async def cmd_suguri(self, channel, message):
+        #await self.send_file(channel, "pics/suguri/" + random.choice(os.listdir("pics/suguri")))
 
     async def cmd_nath(self, channel, message):
         await self.send_file(channel, "pics/nath/" + random.choice(os.listdir("pics/nath")))
@@ -1149,6 +1155,33 @@ class MusicBot(discord.Client):
 
     async def cmd_sherry(self, channel, message):
         await self.send_file(channel, "pics/sherry/" + random.choice(os.listdir("pics/sherry")))
+
+#oj_img_sb
+
+    async def cmd_suguri(client, channel, message):
+            char = 'suguri_(character)'
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                await client.send_message(message.channel, booruappend + msg)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
 
 #th_img
 
@@ -1493,10 +1526,10 @@ class MusicBot(discord.Client):
         else:
 
 #Pull images from sbooru instead of local, using char tag so this command can be used with other characters easily
-            char = 'Cirno'
+            char = 'cirno'
 
 #solo tag to deal with any manga images
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1530,7 +1563,7 @@ class MusicBot(discord.Client):
 
     async def cmd_reimu(client, channel, message):
             char = 'hakurei_reimu'
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1557,7 +1590,7 @@ class MusicBot(discord.Client):
 
     async def cmd_marisa(client, channel, message):
             char = 'kirisame_marisa'
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1584,7 +1617,7 @@ class MusicBot(discord.Client):
 
     async def cmd_sakuya(client, channel, message):
             char = 'izayoi_sakuya'
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1612,7 +1645,7 @@ class MusicBot(discord.Client):
 
     async def cmd_tenshi(client, channel, message):
             char = 'hinanawi_tenshi'
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1640,7 +1673,7 @@ class MusicBot(discord.Client):
 
     async def cmd_meiling(client, channel, message):
             char = 'hong_meiling'
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1668,7 +1701,7 @@ class MusicBot(discord.Client):
 
     async def cmd_flandre(client, channel, message):
             char = 'flandre_scarlet'
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -1694,7 +1727,7 @@ class MusicBot(discord.Client):
 
     async def cmd_rumia(client, channel, message):
             char = 'rumia'
-            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+-underwear+' + char)
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 num = int(soup.find('posts')['count'])
@@ -2255,7 +2288,7 @@ class MusicBot(discord.Client):
 #dev_remote_say
     @owner_only
     async def cmd_rsay(self, channel, message):
-        await self.send_message(discord.Object(id=369389053017194497), message.content[len("=rsay "):].strip())
+        await self.send_message(discord.Object(id=486731440487268372), message.content[len("=rsay "):].strip())
 
 #dev_gbooru_test
 #First steps to getting sbooru working, leave this as owner only as gbooru can return R-18 stuff
