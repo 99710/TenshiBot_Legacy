@@ -19,7 +19,7 @@ boorurating = 'safe'
 #booru tag blacklist
 #results which have these tags won't be shown in the touhou commands
 #does not affect the safebooru command
-boorublacklist = '-underwear+-sideboob+-pov_feet+-underboob+-upskirt+-sexually_suggestive+-ass'
+boorublacklist = '-underwear+-sideboob+-pov_feet+-underboob+-upskirt+-sexually_suggestive+-ass+-bikini'
 
 #append text to the start of booru url output
 #change this if the bot is sending malformed booru urls
@@ -39,6 +39,8 @@ cb_user = ''
 cb_key = ''
 cb_nick = 'Tenko_AI'
 
+#Variant
+bot_variant = normal
 
 import os
 import sys
@@ -1168,6 +1170,7 @@ class MusicBot(discord.Client):
                 page = random.randint(0, maxpage)
                 t = soup.find('posts')
                 p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
                 if num == 0:
                     msg = 'No posts found'
                 else:
@@ -1178,7 +1181,11 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                await client.send_message(message.channel, booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0xCED2EE)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                await client.send_message(channel, embed=em)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1389,8 +1396,8 @@ class MusicBot(discord.Client):
     async def cmd_clownpiece(self, channel):
         await self.send_file(channel, "pics/touhou/clownpiece/" + random.choice(os.listdir("pics/touhou/clownpiece")))
 
-    async def cmd_yukari(self, channel):
-        await self.send_file(channel, "pics/touhou/yukari/" + random.choice(os.listdir("pics/touhou/yukari")))
+    #async def cmd_yukari(self, channel):
+        #await self.send_file(channel, "pics/touhou/yukari/" + random.choice(os.listdir("pics/touhou/yukari")))
 
     async def cmd_yuuka(self, channel):
         await self.send_file(channel, "pics/touhou/yuuka/" + random.choice(os.listdir("pics/touhou/yuuka")))
@@ -1537,6 +1544,7 @@ class MusicBot(discord.Client):
                 page = random.randint(0, maxpage)
                 t = soup.find('posts')
                 p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
                 if num == 0:
                     msg = 'No posts found'
                 else:
@@ -1553,7 +1561,11 @@ class MusicBot(discord.Client):
                         #source = pic['source']
 
 #pretty sure i'm doing something wrong if i'm having to append the http part manually but eh... improvise, adapt, overcome 
-                await client.send_message(message.channel, booruappend + msg)
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0x42D4F4)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
                 #await client.send_message(message.channel, source)
             else:
                 msg = 'An error has occured'
@@ -1571,6 +1583,7 @@ class MusicBot(discord.Client):
                 page = random.randint(0, maxpage)
                 t = soup.find('posts')
                 p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
                 if num == 0:
                     msg = 'No posts found'
                 else:
@@ -1581,7 +1594,11 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                await client.send_message(message.channel, booruappend + msg)
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0xc93d06)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1598,6 +1615,7 @@ class MusicBot(discord.Client):
                 page = random.randint(0, maxpage)
                 t = soup.find('posts')
                 p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
                 if num == 0:
                     msg = 'No posts found'
                 else:
@@ -1608,7 +1626,11 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                await client.send_message(message.channel, booruappend + msg)
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0xf7e702)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1625,6 +1647,7 @@ class MusicBot(discord.Client):
                 page = random.randint(0, maxpage)
                 t = soup.find('posts')
                 p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
                 if num == 0:
                     msg = 'No posts found'
                 else:
@@ -1635,7 +1658,11 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url'] 
-                await client.send_message(message.channel, booruappend + msg)
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0x153ed3)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1643,7 +1670,7 @@ class MusicBot(discord.Client):
 
 
 
-    async def cmd_tenshi(client, channel, message):
+    async def cmd_tenshi1(client, channel, message):
             char = 'hinanawi_tenshi'
             r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
             if r.status_code == 200:
@@ -1669,6 +1696,40 @@ class MusicBot(discord.Client):
                 await client.send_message(message.channel, msg)
 
 
+#maybe these can be sent in an embed to look neater?
+
+    async def cmd_tenshi(client, channel, message):
+            char = 'hinanawi_tenshi'
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0x42D4F4)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+
+
 
 
     async def cmd_meiling(client, channel, message):
@@ -1681,6 +1742,7 @@ class MusicBot(discord.Client):
                 page = random.randint(0, maxpage)
                 t = soup.find('posts')
                 p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
                 if num == 0:
                     msg = 'No posts found'
                 else:
@@ -1691,7 +1753,11 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                await client.send_message(message.channel, booruappend + msg)
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0x028c42)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1709,6 +1775,7 @@ class MusicBot(discord.Client):
                 page = random.randint(0, maxpage)
                 t = soup.find('posts')
                 p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
                 if num == 0:
                     msg = 'No posts found'
                 else:
@@ -1719,7 +1786,11 @@ class MusicBot(discord.Client):
                     else:
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
-                await client.send_message(message.channel, booruappend + msg)
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0xff3700)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
@@ -1735,6 +1806,7 @@ class MusicBot(discord.Client):
                 page = random.randint(0, maxpage)
                 t = soup.find('posts')
                 p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
                 if num == 0:
                     msg = 'No posts found'
                 else:
@@ -1746,7 +1818,42 @@ class MusicBot(discord.Client):
                         pic = p[random.randint(0,99)]
                     msg = pic['file_url']
 
-                await client.send_message(message.channel, booruappend + msg)
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0xffd800)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
+            else:
+                msg = 'An error has occured'
+                await client.send_message(message.channel, msg)
+
+    async def cmd_yukari(client, channel, message):
+            char = 'yakumo_yukari'
+            r = requests.get('http://' + booru + '/index.php?page=dapi&s=post&q=index&tags=solo+' + boorublacklist + '+' + char)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                num = int(soup.find('posts')['count'])
+                maxpage = int(round(num/100))
+                page = random.randint(0, maxpage)
+                t = soup.find('posts')
+                p = t.find_all('post')
+                source = ((soup.find('post'))['source'])
+                if num == 0:
+                    msg = 'No posts found'
+                else:
+                    if num < 100:
+                        pic = p[random.randint(0,num-1)]
+                    elif page == maxpage:
+                        pic = p[random.randint(0,num%100 - 1)]
+                    else:
+                        pic = p[random.randint(0,99)]
+                    msg = pic['file_url']
+
+                em = discord.Embed(title='', description='Image Source: ' + source, colour=0x890489)
+                em.set_author(name='Character Image', icon_url=client.user.avatar_url)
+                em.set_image(url=booruappend + msg)
+                #await client.send_message(message.channel, booruappend + msg)
+                await client.send_message(channel, embed=em)
             else:
                 msg = 'An error has occured'
                 await client.send_message(message.channel, msg)
