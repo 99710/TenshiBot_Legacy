@@ -39,8 +39,6 @@ cb_user = ''
 cb_key = ''
 cb_nick = 'Tenko_AI'
 
-#Variant
-bot_variant = normal
 
 import os
 import sys
