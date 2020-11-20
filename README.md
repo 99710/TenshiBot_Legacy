@@ -11,7 +11,7 @@
 </a>
 
 <h2> As of 01/05/2019 this version of Tenshi is no longer supported </h2>
-<p>Visit https://github.com/99710/TenshiBot for the current version</p>
+<p>Visit https://github.com/kawashirodev/TenshiBot for the current version</p>
 
 
 <h2> Known issues </h2>
